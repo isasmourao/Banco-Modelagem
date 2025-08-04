@@ -1,0 +1,46 @@
+﻿@page "/teste-binding"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+
+<h3>Teste de Binding de formulário</h3>
+
+<EditForm Model="@modelo" OnValidSubmit="OnSubmit" FormName="testeBindingForm" Enhanced="false">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText @bind-Value="modelo.Nome" placeholder="Nome" class="form-control mb-2" />
+    <InputText @bind-Value="modelo.CPF" placeholder="CPF" class="form-control mb-2" />
+    <InputText @bind-Value="modelo.Senha" placeholder="Senha" type="password" class="form-control mb-2" />
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(mensagem))
+{
+    <p class="mt-3 alert alert-info">@mensagem</p>
+}
+
+<p><strong>DEBUG:</strong> Nome = @modelo.Nome, CPF = @modelo.CPF, Senha = @modelo.Senha</p>
+
+@code {
+    private ModeloTeste modelo = new();
+    private string mensagem;
+
+    private void OnSubmit()
+    {
+        mensagem = $"Submetido com sucesso: {modelo.Nome} | {modelo.CPF}";
+        modelo = new(); // limpa
+    }
+
+    public class ModeloTeste
+    {
+        [Required]
+        public string Nome { get; set; }
+
+        [Required]
+        public string CPF { get; set; }
+
+        [Required]
+        [MinLength(6)]
+        public string Senha { get; set; }
+    }
+}

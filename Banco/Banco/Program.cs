@@ -1,10 +1,16 @@
-using Banco.Components;
+using Banco.Infrastructure.Interfaces;
+using Banco.Infrastructure.Repositories;
+using Banco.Services.Interfaces;
+using Banco.Services;
+using Banco.View.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
 
 var app = builder.Build();
 
