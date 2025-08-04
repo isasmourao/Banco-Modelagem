@@ -1,4 +1,4 @@
-using Banco.Components;
+using Banco.View.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
