@@ -1,14 +1,14 @@
-﻿using Banco.Enums;
-using Banco.Exceptions;
+﻿using Banco.Exceptions;
+using System.Text.RegularExpressions;
 
 namespace Banco.Models.Entities
 {
     public abstract class Usuario
     {
-        private Guid Id { get; init; } = Guid.NewGuid();
-        private string Nome {  get; set; }
-        private string CPF { get; set; }
-        private string Senha { get; set; }
+        public Guid Id { get; protected set; } = Guid.NewGuid();
+        public string Nome {  get; private set; }
+        public string CPF { get; private set; }
+        public string Senha { get; private set; }
 
         protected Usuario()
         {
@@ -22,22 +22,34 @@ namespace Banco.Models.Entities
             Nome = nome;
         }
 
-        private void SetCpf(string cpf)
+        public void SetCpf(string cpf)
         {
-            cpf = cpf.Replace("[^0-9]", "");
+            if (string.IsNullOrWhiteSpace(cpf))
+                throw new DadoInseridoInvalidoException("O CPF não pode ser vazio.");
 
-            if (cpf.Length != 11)
+            var cpfSemFormatacao = Regex.Replace(cpf, "[^0-9]", "");
+            if (cpfSemFormatacao.Length != 11)
                 throw new DadoInseridoInvalidoException("O CPF digitado é inválido");
 
-            CPF = cpf;
+            CPF = cpfSemFormatacao;
         }
 
-        private void SetSenha(string senha)
+        public void SetSenha(string senha)
         {
-            if (senha.Length < 6)
+            if (string.IsNullOrWhiteSpace(senha) || senha.Length < 6)
                 throw new DadoInseridoInvalidoException("A senha digitada é inválida");
 
             Senha = senha;
+        }
+
+        public void SetNome(string nome)
+        {
+            Nome = nome;
+        }
+
+        public void EditarSenha(string novaSenha)
+        {
+            SetSenha(novaSenha);
         }
     }
 }

@@ -8,10 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Models\Interfaces\" />
-    <Folder Include="Infrastructure\" />
-    <Folder Include="Services\Interfaces\" />
     <Folder Include="View\Shared\" />
-    <Folder Include="View\Pages\" />
   </ItemGroup>
 
 </Project>
