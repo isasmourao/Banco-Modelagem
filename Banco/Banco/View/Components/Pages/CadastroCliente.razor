@@ -36,7 +36,7 @@
             cliente.SetCpf(clienteForm.CPF);
             cliente.SetSenha(clienteForm.Senha);
 
-            ClienteService.CadastrarCliente(cliente);
+            ClienteService.CriarCliente(cliente);
             mensagem = "Cliente cadastrado com sucesso!";
             clienteForm = new();
         }

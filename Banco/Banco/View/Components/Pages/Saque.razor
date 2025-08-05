@@ -1,0 +1,47 @@
+﻿@page "/cliente/saque"
+@using Banco.Services.Interfaces
+@inject IClienteService ClienteService
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<PageTitle>Saque</PageTitle>
+
+<h3>Realizar Saque</h3>
+
+<div class="mb-3">
+    <label class="form-label">CPF do Cliente:</label>
+    <input class="form-control" @bind="cpf" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">ID da Conta:</label>
+    <input class="form-control" @bind="contaIdStr" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Valor do Saque:</label>
+    <input type="number" class="form-control" @bind="valor" />
+</div>
+
+<button class="btn btn-danger" @onclick="RealizarSaque">Sacar</button>
+
+@code {
+    private string cpf;
+    private string contaIdStr;
+    private decimal valor;
+
+    private async Task RealizarSaque()
+    {
+        try
+        {
+            var contaId = Guid.Parse(contaIdStr);
+            ClienteService.Sacar(cpf, contaId, valor);
+            await JS.InvokeVoidAsync("alert", "Saque realizado com sucesso!");
+            Navigation.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Erro: {ex.Message}");
+        }
+    }
+}

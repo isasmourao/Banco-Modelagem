@@ -1,0 +1,61 @@
+﻿@page "/cliente/transferencia"
+@using Banco.Services.Interfaces
+@inject IClienteService ClienteService
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<PageTitle>Transferência</PageTitle>
+
+<h3>Realizar Transferência</h3>
+
+<div class="mb-3">
+    <label class="form-label">CPF Origem:</label>
+    <input class="form-control" @bind="cpfOrigem" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">ID Conta Origem:</label>
+    <input class="form-control" @bind="contaOrigemStr" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">CPF Destino:</label>
+    <input class="form-control" @bind="cpfDestino" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">ID Conta Destino:</label>
+    <input class="form-control" @bind="contaDestinoStr" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Valor:</label>
+    <input type="number" class="form-control" @bind="valor" />
+</div>
+
+<button class="btn btn-primary" @onclick="Transferir">Transferir</button>
+
+@code {
+    private string cpfOrigem;
+    private string contaOrigemStr;
+    private string cpfDestino;
+    private string contaDestinoStr;
+    private decimal valor;
+
+    private async Task Transferir()
+    {
+        try
+        {
+            var contaOrigemId = Guid.Parse(contaOrigemStr);
+            var contaDestinoId = Guid.Parse(contaDestinoStr);
+
+            ClienteService.Transferir(cpfOrigem, contaOrigemId, cpfDestino, contaDestinoId, valor);
+            await JS.InvokeVoidAsync("alert", "Transferência realizada com sucesso!");
+            Navigation.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Erro: {ex.Message}");
+        }
+    }
+}

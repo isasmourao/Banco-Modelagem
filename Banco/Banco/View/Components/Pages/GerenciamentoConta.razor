@@ -1,0 +1,37 @@
+﻿@page "/contas"
+@using Banco.Models.Entities
+@using Banco.Services.Interfaces
+@inject IContaService ContaService
+
+<h3>Contas</h3>
+
+<input @bind="cpf" placeholder="CPF do Cliente" />
+<input @bind="numero" placeholder="Número da Conta" />
+<button @onclick="CriarConta">Criar Conta</button>
+
+<hr />
+
+<h4>Contas Registradas</h4>
+<ul>
+    @foreach (var conta in contas)
+    {
+        <li>@conta.Numero - Saldo: R$ @conta.Saldo</li>
+    }
+</ul>
+
+@code {
+    private string cpf;
+    private string numero;
+    private List<Conta> contas = new();
+
+    protected override void OnInitialized()
+    {
+        contas = ContaService.Listar();
+    }
+
+    private void CriarConta()
+    {
+        ContaService.CriarConta(cpf, numero);
+        contas = ContaService.Listar();
+    }
+}

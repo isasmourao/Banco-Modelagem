@@ -1,7 +1,7 @@
 using Banco.Infrastructure.Interfaces;
 using Banco.Infrastructure.Repositories;
-using Banco.Services.Interfaces;
 using Banco.Services;
+using Banco.Services.Interfaces;
 using Banco.View.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +11,10 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddSingleton<IContaRepository, ContaRepository>();
+builder.Services.AddSingleton<IContaService, ContaService>();
+builder.Services.AddScoped<IEmprestimoRepository, EmprestimoRepository>();
+builder.Services.AddScoped<IExtratoRepository, ExtratoRepository>();
 
 var app = builder.Build();
 

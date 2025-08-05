@@ -2,9 +2,57 @@
   {
     "Contas": [],
     "EmprestimosSolicitados": [],
-    "Id": "c482504f-fc7f-46f2-9081-f3c6b90e2325",
-    "Nome": "isabella",
-    "CPF": "14009246693",
-    "Senha": "12345678"
+    "Id": "1ad4e6a0-d992-4ace-b78c-46d2d5c5b43d",
+    "Nome": null,
+    "CPF": null,
+    "Senha": null
+  },
+  {
+    "Contas": [],
+    "EmprestimosSolicitados": [],
+    "Id": "515ff71a-f74f-4a15-8434-c1d77d70bf7d",
+    "Nome": null,
+    "CPF": null,
+    "Senha": null
+  },
+  {
+    "Contas": [],
+    "EmprestimosSolicitados": [],
+    "Id": "b3510f4a-a1ff-4e10-85ec-c88981e33c4f",
+    "Nome": null,
+    "CPF": null,
+    "Senha": null
+  },
+  {
+    "Contas": [
+      {
+        "Id": "f76c5781-9dea-43ac-8686-7784ee3a4b75",
+        "Numero": "73886054",
+        "Saldo": 0,
+        "CPFCliente": null,
+        "Extratos": []
+      }
+    ],
+    "EmprestimosSolicitados": [],
+    "Id": "24e35af6-a91c-471a-bda8-c485d35f5144",
+    "Nome": "isabellateste3",
+    "CPF": "14085678800",
+    "Senha": "oiploisodos"
+  },
+  {
+    "Contas": [
+      {
+        "Id": "eda9c574-c38b-4253-9b2a-7fccbbcc9e95",
+        "Numero": "40936669",
+        "Saldo": 0,
+        "CPFCliente": null,
+        "Extratos": []
+      }
+    ],
+    "EmprestimosSolicitados": [],
+    "Id": "73c7c4be-6128-491e-8dfc-ca0226d18433",
+    "Nome": "teste4",
+    "CPF": "45678909909",
+    "Senha": "aoiwhdjoaiwjd"
   }
 ]

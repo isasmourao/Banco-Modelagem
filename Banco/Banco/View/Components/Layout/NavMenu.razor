@@ -1,39 +1,98 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Banco</a>
+﻿<nav class="nav-menu p-3">
+    <!-- Home -->
+    <div class="nav-item mb-2">
+        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <span class="bi bi-house-door-fill me-2" aria-hidden="true"></span> Home
+        </NavLink>
     </div>
-</div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+    <!-- Cadastro de Cliente -->
+    <div class="nav-item mb-2">
+        <NavLink class="nav-link" href="/cadastro-cliente">
+            <span class="bi bi-person-plus-fill me-2" aria-hidden="true"></span> Cadastro Cliente
+        </NavLink>
+    </div>
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+    <!-- Dropdown - Operações do Cliente -->
+    <div class="nav-item dropdown mb-2">
+        <a class="nav-link dropdown-toggle" href="#" id="clienteOperacoesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="bi bi-person-lines-fill me-2" aria-hidden="true"></span> Operações do Cliente
+        </a>
+        <ul class="dropdown-menu show-on-hover" aria-labelledby="clienteOperacoesDropdown">
+            <li><NavLink class="dropdown-item" href="/cliente/editar-senha">Editar Senha</NavLink></li>
+            <li><NavLink class="dropdown-item" href="/cliente/deposito">Depositar</NavLink></li>
+            <li><NavLink class="dropdown-item" href="/cliente/saque">Sacar</NavLink></li>
+            <li><NavLink class="dropdown-item" href="/cliente/transferencia">Transferência</NavLink></li>
+            <li><NavLink class="dropdown-item" href="/cliente/emprestimo">Solicitar Empréstimo</NavLink></li>
+        </ul>
+    </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
+    <!-- Extratos -->
+    <div class="nav-item mb-2">
+        <NavLink class="nav-link" href="/extratos">
+            <span class="bi bi-list-ul me-2" aria-hidden="true"></span> Extratos
+        </NavLink>
+    </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
+    <li class="nav-item px-3">
+        <NavLink class="nav-link" href="/cliente/saque">
+            <span class="oi oi-credit-card" aria-hidden="true"></span> Saque
+        </NavLink>
+    </li>
+    <li class="nav-item px-3">
+        <NavLink class="nav-link" href="/cliente/transferencia">
+            <span class="oi oi-transfer" aria-hidden="true"></span> Transferência
+        </NavLink>
+    </li>
+    <li class="nav-item px-3">
+        <NavLink class="nav-link" href="/cliente/emprestimo">
+            <span class="oi oi-dollar" aria-hidden="true"></span> Empréstimo
+        </NavLink>
+    </li>
 
-        <!-- Cadastro cliente -->
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/cadastro-cliente">
-                <span class="bi bi-person-plus-fill" aria-hidden="true"></span> Cadastro Cliente
-            </NavLink>
-        </div>
+</nav>
 
-        <NavLink class="nav-link" href="teste-binding">Teste Binding</NavLink>
+<style>
+    .nav-menu {
+        background-color: #343a40; /* cinza escuro */
+        color: #fff;
+        font-weight: bold;
+        min-height: 100vh;
+    }
 
-    </nav>
-</div>
+    .nav-link {
+        color: #ffffff !important;
+        font-weight: bold;
+    }
+
+        .nav-link.active {
+            color: #ffc107 !important; /* amarelo destaque */
+        }
+
+    .dropdown-menu {
+        background-color: #495057;
+        border: none;
+    }
+
+    .dropdown-item {
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+        .dropdown-item:hover {
+            background-color: #6c757d;
+        }
+
+    .bi {
+        font-size: 1.2rem;
+    }
+
+    /* Forçar dropdown a abrir ao clicar (funciona com Bootstrap + Razor) */
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-toggle::after {
+        margin-left: 0.5rem;
+    }
+</style>
