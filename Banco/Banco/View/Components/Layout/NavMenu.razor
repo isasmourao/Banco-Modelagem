@@ -34,22 +34,12 @@
         </NavLink>
     </div>
 
-    <li class="nav-item px-3">
-        <NavLink class="nav-link" href="/cliente/saque">
-            <span class="oi oi-credit-card" aria-hidden="true"></span> Saque
+    <!-- Empréstimos -->
+    <div class="nav-item mb-2">
+        <NavLink class="nav-link" href="/emprestimos">
+            <span class="bi bi-cash-coin me-2" aria-hidden="true"></span> Empréstimos
         </NavLink>
-    </li>
-    <li class="nav-item px-3">
-        <NavLink class="nav-link" href="/cliente/transferencia">
-            <span class="oi oi-transfer" aria-hidden="true"></span> Transferência
-        </NavLink>
-    </li>
-    <li class="nav-item px-3">
-        <NavLink class="nav-link" href="/cliente/emprestimo">
-            <span class="oi oi-dollar" aria-hidden="true"></span> Empréstimo
-        </NavLink>
-    </li>
-
+    </div>
 </nav>
 
 <style>
@@ -87,7 +77,6 @@
         font-size: 1.2rem;
     }
 
-    /* Forçar dropdown a abrir ao clicar (funciona com Bootstrap + Razor) */
     .dropdown:hover .dropdown-menu {
         display: block;
     }
