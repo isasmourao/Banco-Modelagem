@@ -44,6 +44,21 @@ public class ClienteRepository : IClienteRepository
         return clientes.Any(c => c.CPF == cpf);
     }
 
+    public Cliente ObterPorCpf(string cpf)
+    {
+        return clientes.FirstOrDefault(c => c.CPF == cpf);
+    }
+
+    public void Atualizar(Cliente clienteAtualizado)
+    {
+        var index = clientes.FindIndex(c => c.CPF == clienteAtualizado.CPF);
+        if (index >= 0)
+        {
+            clientes[index] = clienteAtualizado;
+            SalvarNoArquivo();
+        }
+    }
+
     private static void SalvarNoArquivo()
     {
         var options = new JsonSerializerOptions

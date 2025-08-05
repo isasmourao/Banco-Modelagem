@@ -3,4 +3,13 @@
         <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
+    <NotFound>
+        <LayoutView Layout="typeof(Layout.MainLayout)">
+            <div class="p-5 text-center text-white">
+                <h1>😕 Página não encontrada</h1>
+                <p>A rota digitada não existe.</p>
+                <NavLink class="btn btn-light mt-3 fw-bold" href="/">Voltar para Home</NavLink>
+            </div>
+        </LayoutView>
+    </NotFound>
 </Router>

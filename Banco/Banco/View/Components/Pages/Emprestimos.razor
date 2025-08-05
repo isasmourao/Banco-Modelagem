@@ -1,0 +1,48 @@
+﻿@page "/cliente/emprestimo"
+@using Banco.Services.Interfaces
+@inject IClienteService ClienteService
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<PageTitle>Solicitar Empréstimo</PageTitle>
+
+<h3>Solicitar Empréstimo</h3>
+
+<div class="mb-3">
+    <label class="form-label">CPF do Cliente:</label>
+    <input class="form-control" @bind="cpf" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Valor do Empréstimo:</label>
+    <input type="number" class="form-control" @bind="valor" />
+</div>
+
+<button class="btn btn-primary" @onclick="Solicitar">Solicitar</button>
+
+@code {
+    private string cpf;
+    private decimal valor;
+
+    private async Task Solicitar()
+    {
+        try
+        {
+            var cliente = ClienteService.ObterPorCpf(cpf);
+
+            if (cliente == null)
+            {
+                await JS.InvokeVoidAsync("alert", "Cliente não encontrado.");
+                return;
+            }
+
+            ClienteService.SolicitarEmprestimo(cpf, valor);
+            await JS.InvokeVoidAsync("alert", "Empréstimo solicitado com sucesso!");
+            Navigation.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Erro: {ex.Message}");
+        }
+    }
+}

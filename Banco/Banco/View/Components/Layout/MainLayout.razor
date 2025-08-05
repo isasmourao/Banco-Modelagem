@@ -1,23 +1,54 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="bg-dark text-white" style="width: 250px;">
         <NavMenu />
     </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+    <!-- Main Content -->
+    <div class="flex-grow-1 main-content">
+        <header class="custom-header p-3 shadow-sm">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Banco Digital</h5>
+                <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">Documentação</a>
+            </div>
+        </header>
 
-        <article class="content px-4">
+        <main class="p-4">
             @Body
-        </article>
-    </main>
+        </main>
+    </div>
 </div>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
+<div id="blazor-error-ui" class="alert alert-danger fixed-bottom m-0 rounded-0 text-center" style="display:none;">
+    Ocorreu um erro inesperado.
+    <a href="" class="alert-link">Recarregar</a>
+    <span class="ms-3 text-white" style="cursor: pointer;" onclick="document.getElementById('blazor-error-ui').style.display='none';">🗙</span>
 </div>
+
+<style>
+    .main-content {
+        background-color: #778899;
+        min-height: 100vh;
+        color: black;
+        font-weight: bold;
+    }
+
+    .custom-header {
+        background-color: #c9b6e4;
+        color: white;
+        font-weight: bold;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+        .custom-header a {
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+            .custom-header a:hover {
+                text-decoration: underline;
+            }
+</style>

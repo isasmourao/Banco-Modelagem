@@ -1,0 +1,32 @@
+﻿@page "/extratos"
+@using Banco.Infrastructure.Interfaces
+@using Banco.Models.Entities
+@inject IExtratoRepository ExtratoRepo
+
+<h3>Extratos por Conta</h3>
+
+<input placeholder="ID da Conta" @bind="contaIdRaw" />
+<button @onclick="CarregarExtratos">Ver Extratos</button>
+
+@if (extratos.Any())
+{
+    <ul>
+        @foreach (var e in extratos)
+        {
+            <li>@e.Data.ToShortDateString() - @e.Descricao - R$ @e.Valor</li>
+        }
+    </ul>
+}
+
+@code {
+    private string contaIdRaw;
+    private List<Extrato> extratos = new();
+
+    private void CarregarExtratos()
+    {
+        if (Guid.TryParse(contaIdRaw, out var contaId))
+        {
+            extratos = ExtratoRepo.ListarPorConta(contaId);
+        }
+    }
+}

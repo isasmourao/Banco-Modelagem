@@ -9,5 +9,7 @@ namespace Banco.Infrastructure.Interfaces
         void Editar(string cpf, string novaSenha);
         List<Cliente> ListarClientes();
         bool ExisteCliente(string cpf);
+        Cliente ObterPorCpf(string cpf);
+        void Atualizar(Cliente cliente);
     }
 }

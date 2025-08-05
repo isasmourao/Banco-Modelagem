@@ -1,0 +1,135 @@
+﻿@page "/cliente/operacoes"
+@using Banco.Models.Entities
+@using Banco.Services.Interfaces
+@inject IClienteService ClienteService
+@inject NavigationManager Navigation
+
+<h3>Operações do Cliente</h3>
+
+<div class="mb-3">
+    <label>Cliente</label>
+    <select class="form-select" @bind="cpfSelecionado">
+        <option disabled selected value="">Selecione um cliente</option>
+        @foreach (var cliente in clientes)
+        {
+            <option value="@cliente.CPF">@cliente.Nome (@cliente.CPF)</option>
+        }
+    </select>
+</div>
+
+@if (clienteAtual != null)
+{
+    <div class="mb-3">
+        <label>Conta</label>
+        <select class="form-select" @bind="contaSelecionadaId">
+            <option disabled selected value="">Selecione uma conta</option>
+            @foreach (var conta in clienteAtual.Contas)
+            {
+                <option value="@conta.Id">@conta.Numero - R$ @conta.Saldo</option>
+            }
+        </select>
+    </div>
+
+    <div class="card mb-3 p-3">
+        <h5>Depositar / Sacar</h5>
+        <input type="number" class="form-control mb-2" @bind="valorOperacao" placeholder="Valor" />
+        <button class="btn btn-primary me-2" @onclick="Depositar">Depositar</button>
+        <button class="btn btn-secondary" @onclick="Sacar">Sacar</button>
+    </div>
+
+    <div class="card mb-3 p-3">
+        <h5>Consultar Saldo</h5>
+        <button class="btn btn-info" @onclick="ConsultarSaldo">Consultar</button>
+        <span class="ms-3">Saldo: R$ @saldoConsulta</span>
+    </div>
+
+    <div class="card mb-3 p-3">
+        <h5>Solicitar Empréstimo</h5>
+        <input type="number" class="form-control mb-2" @bind="valorEmprestimo" placeholder="Valor" />
+        <button class="btn btn-warning" @onclick="SolicitarEmprestimo">Solicitar</button>
+    </div>
+
+    <div class="card mb-3 p-3">
+        <h5>Transferência</h5>
+        <input class="form-control mb-2" placeholder="CPF destino" @bind="cpfDestino" />
+        <input class="form-control mb-2" placeholder="GUID conta destino" @bind="contaDestinoIdRaw" />
+        <input type="number" class="form-control mb-2" @bind="valorTransferencia" placeholder="Valor" />
+        <button class="btn btn-success" @onclick="Transferir">Transferir</button>
+    </div>
+}
+
+@code {
+    private List<Cliente> clientes = new();
+    private string cpfSelecionado;
+    private Cliente clienteAtual;
+
+    private Guid? contaSelecionadaId;
+    private string contaSelecionadaIdRaw;
+
+    private decimal valorOperacao;
+    private decimal saldoConsulta;
+
+    private decimal valorEmprestimo;
+
+    private string cpfDestino;
+    private string contaDestinoIdRaw;
+    private decimal valorTransferencia;
+
+    protected override void OnInitialized()
+    {
+        clientes = ClienteService.ListarTodos();
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(cpfSelecionado))
+            clienteAtual = ClienteService.ObterPorCpf(cpfSelecionado);
+    }
+
+    private void Depositar()
+    {
+        if (contaSelecionadaId.HasValue)
+        {
+            ClienteService.Depositar(cpfSelecionado, contaSelecionadaId.Value, valorOperacao);
+            RefreshCliente();
+        }
+    }
+
+    private void Sacar()
+    {
+        if (contaSelecionadaId.HasValue)
+        {
+            ClienteService.Sacar(cpfSelecionado, contaSelecionadaId.Value, valorOperacao);
+            RefreshCliente();
+        }
+    }
+
+    private void ConsultarSaldo()
+    {
+        if (contaSelecionadaId.HasValue)
+        {
+            saldoConsulta = ClienteService.ConsultarSaldo(cpfSelecionado, contaSelecionadaId.Value);
+        }
+    }
+
+    private void SolicitarEmprestimo()
+    {
+        ClienteService.SolicitarEmprestimo(cpfSelecionado, valorEmprestimo);
+        RefreshCliente();
+    }
+
+    private void Transferir()
+    {
+        if (contaSelecionadaId.HasValue && Guid.TryParse(contaDestinoIdRaw, out var contaDestinoId))
+        {
+            ClienteService.Transferir(cpfSelecionado, contaSelecionadaId.Value, cpfDestino, contaDestinoId, valorTransferencia);
+            RefreshCliente();
+        }
+    }
+
+    private void RefreshCliente()
+    {
+        clienteAtual = ClienteService.ObterPorCpf(cpfSelecionado);
+        StateHasChanged();
+    }
+}
