@@ -1,4 +1,14 @@
 ﻿@page "/"
+@using Banco.Enums
+@using Banco.Infrastructure.Interfaces
+@using Banco.Services
+@inject SessaoUsuarioService Sessao
+@inject NavigationManager Nav
+@inject IClienteRepository ClienteRepo
+@inject IGerenteRepository GerenteRepo
+@inject IJSRuntime JS
+@rendermode InteractiveServer
+
 <PageTitle>Home</PageTitle>
 
 <div class="home-background p-4 min-vh-100">
@@ -7,23 +17,61 @@
     </div>
 
     <div class="container bg-white p-4 rounded shadow-sm">
-        <p class="lead">Escolha uma operação no menu lateral para começar.</p>
+        @if (!Sessao.EstaLogado)
+        {
+            <p class="lead">Faça login para continuar:</p>
+
+            <div class="mb-3">
+                <label class="form-label">CPF:</label>
+                <input class="form-control" @bind="cpf" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Senha:</label>
+                <input type="password" class="form-control" @bind="senha" />
+            </div>
+            <button class="btn btn-primary" @onclick="Login">Entrar</button>
+        }
+        else
+        {
+            <p class="lead">Você está logado como <strong>@Sessao.Tipo</strong> - CPF <strong>@Sessao.CPF</strong>.</p>
+            <p>Use o menu lateral para navegar nas opções disponíveis.</p>
+        }
     </div>
 </div>
 
-<style>
-    .home-background {
-        background-color: #f5f5f5; /* cinza bem claro */
-    }
+@code {
+    private string cpf;
+    private string senha;
 
-    .home-header {
-        background-color: #e5d3ff; /* roxo claro */
-        color: #2d004d;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-weight: 600;
-    }
+    private async Task Login()
+    {
+        if (string.IsNullOrWhiteSpace(cpf) || string.IsNullOrWhiteSpace(senha))
+        {
+            await JS.InvokeVoidAsync("alert", "Preencha CPF e senha.");
+            return;
+        }
 
-    .container {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        // Tenta como cliente
+        var cliente = ClienteRepo.ObterPorCpf(cpf);
+        if (cliente != null && cliente.Senha == senha)
+        {
+            Sessao.Login(cpf, TipoUsuarioEnum.Cliente);
+            await JS.InvokeVoidAsync("alert", "Login realizado como Cliente!");
+            Nav.NavigateTo("/", forceLoad: true);
+            return;
+        }
+
+        // Tenta como gerente
+        var gerente = GerenteRepo.ObterPorCpf(cpf);
+        if (gerente != null && gerente.Senha == senha)
+        {
+            Sessao.Login(cpf, TipoUsuarioEnum.Gerente);
+            await JS.InvokeVoidAsync("alert", "Login realizado como Gerente!");
+            Nav.NavigateTo("/", forceLoad: true);
+            return;
+        }
+
+        // Nenhum encontrado ou senha incorreta
+        await JS.InvokeVoidAsync("alert", "CPF ou senha inválidos.");
     }
-</style>
+}

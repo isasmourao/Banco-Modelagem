@@ -1,32 +1,79 @@
-﻿@page "/extratos"
+﻿@page "/cliente/extrato"
 @using Banco.Infrastructure.Interfaces
 @using Banco.Models.Entities
+@using Banco.Services.Interfaces
+@using Banco.Services
+@inject IClienteService ClienteService
 @inject IExtratoRepository ExtratoRepo
+@inject SessaoUsuarioService Sessao
+@inject IJSRuntime JS
+@rendermode InteractiveServer
 
-<h3>Extratos por Conta</h3>
+<h3>Extrato Bancário</h3>
 
-<input placeholder="ID da Conta" @bind="contaIdRaw" />
-<button @onclick="CarregarExtratos">Ver Extratos</button>
-
-@if (extratos.Any())
+@if (!Sessao.EstaLogado || Sessao.Tipo != Banco.Enums.TipoUsuarioEnum.Cliente)
 {
-    <ul>
-        @foreach (var e in extratos)
-        {
-            <li>@e.Data.ToShortDateString() - @e.Descricao - R$ @e.Valor</li>
-        }
-    </ul>
+    <p class="text-danger">Acesso negado. Faça login como cliente.</p>
+}
+else if (cliente == null)
+{
+    <p>Carregando dados do cliente...</p>
+}
+else
+{
+    <div class="mb-3">
+        <h5>Conta: @conta.Numero</h5>
+        <p><strong>Saldo:</strong> @conta.Saldo.ToString("C")</p>
+    </div>
+
+    <h5>Extrato</h5>
+
+    @if (extratos.Count == 0)
+    {
+        <p>Nenhuma movimentação encontrada.</p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var e in extratos.OrderByDescending(e => e.Data))
+                {
+                    <tr>
+                        <td>@e.Data.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@e.Descricao</td>
+                        <td class="@((e.Valor < 0 ? "text-danger" : "text-success"))">@e.Valor.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 }
 
 @code {
-    private string contaIdRaw;
+    private Cliente cliente;
+    private Conta conta;
     private List<Extrato> extratos = new();
 
-    private void CarregarExtratos()
+    protected override void OnInitialized()
     {
-        if (Guid.TryParse(contaIdRaw, out var contaId))
+        if (!Sessao.EstaLogado || Sessao.Tipo != Banco.Enums.TipoUsuarioEnum.Cliente)
         {
-            extratos = ExtratoRepo.ListarPorConta(contaId);
+            return;
+        }
+
+        cliente = ClienteService.ObterPorCpf(Sessao.CPF);
+
+        if (cliente?.Contas?.Any() == true)
+        {
+            conta = cliente.Contas.First(); // ou escolha por ID, se houver múltiplas
+            extratos = ExtratoRepo.ListarPorContaId(conta.Id);
         }
     }
 }

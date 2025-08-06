@@ -1,46 +1,79 @@
-﻿<nav class="nav-menu p-3">
-    <!-- Home -->
-    <div class="nav-item mb-2">
-        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-            <span class="bi bi-house-door-fill me-2" aria-hidden="true"></span> Home
-        </NavLink>
-    </div>
+﻿@using Banco.Enums
+@using Banco.Services
+@inject Banco.Services.SessaoUsuarioService Sessao
 
-    <!-- Cadastro de Cliente -->
-    <div class="nav-item mb-2">
-        <NavLink class="nav-link" href="/cadastro-cliente">
-            <span class="bi bi-person-plus-fill me-2" aria-hidden="true"></span> Cadastro Cliente
-        </NavLink>
-    </div>
+<nav class="nav-menu p-3">
+    @if (!Sessao.EstaLogado)
+    {
+        <p class="text-white">Faça login para acessar o menu.</p>
+    }
+    else
+    {
+        <!-- Menu padrão (visível para todos) -->
+        <div class="nav-item mb-2">
+            <NavLink class="nav-link" href="">
+                <span class="bi bi-house-door-fill me-2" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
 
-    <!-- Dropdown - Operações do Cliente -->
-    <div class="nav-item dropdown mb-2">
-        <a class="nav-link dropdown-toggle" href="#" id="clienteOperacoesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="bi bi-person-lines-fill me-2" aria-hidden="true"></span> Operações do Cliente
-        </a>
-        <ul class="dropdown-menu show-on-hover" aria-labelledby="clienteOperacoesDropdown">
-            <li><NavLink class="dropdown-item" href="/cliente/editar-senha">Editar Senha</NavLink></li>
-            <li><NavLink class="dropdown-item" href="/cliente/deposito">Depositar</NavLink></li>
-            <li><NavLink class="dropdown-item" href="/cliente/saque">Sacar</NavLink></li>
-            <li><NavLink class="dropdown-item" href="/cliente/transferencia">Transferência</NavLink></li>
-            <li><NavLink class="dropdown-item" href="/cliente/emprestimo">Solicitar Empréstimo</NavLink></li>
-        </ul>
-    </div>
+        @if (Sessao.Tipo == TipoUsuarioEnum.Cliente)
+        {
+            <!-- Operações do Cliente -->
+            <div class="nav-item dropdown mb-2">
+                <a class="nav-link dropdown-toggle" href="#" id="clienteOperacoesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="bi bi-person-lines-fill me-2" aria-hidden="true"></span> Operações
+                </a>
+                <ul class="dropdown-menu show-on-hover" aria-labelledby="clienteOperacoesDropdown">
+                    <li><NavLink class="dropdown-item" href="/cliente/editar-senha">Editar Senha</NavLink></li>
+                    <li><NavLink class="dropdown-item" href="/cliente/deposito">Depositar</NavLink></li>
+                    <li><NavLink class="dropdown-item" href="/cliente/saque">Sacar</NavLink></li>
+                    <li><NavLink class="dropdown-item" href="/cliente/transferencia">Transferência</NavLink></li>
+                    <li><NavLink class="dropdown-item" href="/cliente/emprestimo">Solicitar Empréstimo</NavLink></li>
+                </ul>
+            </div>
 
-    <!-- Extratos -->
-    <div class="nav-item mb-2">
-        <NavLink class="nav-link" href="/extratos">
-            <span class="bi bi-list-ul me-2" aria-hidden="true"></span> Extratos
-        </NavLink>
-    </div>
+            <!-- Extratos -->
+            <div class="nav-item mb-2">
+                <NavLink class="nav-link" href="/cliente/extrato">
+                    <span class="bi bi-card-list me-2" aria-hidden="true"></span> Extratos
+                </NavLink>
+            </div>
 
-    <!-- Empréstimos -->
-    <div class="nav-item mb-2">
-        <NavLink class="nav-link" href="/emprestimos">
-            <span class="bi bi-cash-coin me-2" aria-hidden="true"></span> Empréstimos
-        </NavLink>
-    </div>
+            <!-- Meus Empréstimos -->
+            <div class="nav-item mb-2">
+                <NavLink class="nav-link" href="/cliente/meus-emprestimos">
+                    <span class="bi bi-cash-coin me-2" aria-hidden="true"></span> Meus Empréstimos
+                </NavLink>
+            </div>
+
+        }
+        else if (Sessao.Tipo == TipoUsuarioEnum.Gerente)
+        {
+            <!-- Menu do Gerente -->
+            <div class="nav-item mb-2">
+                <NavLink class="nav-link" href="/gerente/aprovacao">
+                    <span class="bi bi-check2-circle me-2" aria-hidden="true"></span> Aprovar Empréstimos
+                </NavLink>
+            </div>
+        }
+
+        <!-- Botão de Logout -->
+        <div class="nav-item mt-4">
+            <button class="btn btn-warning w-100" @onclick="Logout">Sair</button>
+        </div>
+    }
 </nav>
+
+
+@code {
+    [Inject] NavigationManager Nav { get; set; }
+
+    private void Logout()
+    {
+        Sessao.LimparSessao(); // Limpa sessão e dispara OnSessaoAlterada
+        Nav.NavigateTo("/", forceLoad: true); // Navega para home
+    }
+}
 
 <style>
     .nav-menu {

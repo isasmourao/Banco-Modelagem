@@ -24,6 +24,8 @@
 
     private async Task FazerLogin()
     {
+        erro = string.Empty;
+
         var (tipo, usuario) = AuthService.Autenticar(loginModel.CPF, loginModel.Senha);
 
         switch (tipo)

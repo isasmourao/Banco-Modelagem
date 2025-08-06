@@ -24,7 +24,7 @@ namespace Banco.Infrastructure.Repositories
             return JsonSerializer.Deserialize<List<Extrato>>(json) ?? new List<Extrato>();
         }
 
-        public List<Extrato> ListarPorConta(Guid contaId)
+        public List<Extrato> ListarPorContaId(Guid contaId)
         {
             return ListarTodos().Where(e => e.ContaId == contaId).ToList();
         }
