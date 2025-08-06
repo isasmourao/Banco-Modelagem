@@ -1,14 +1,14 @@
-body {
+/*body {
     background-color: #fffef8;
     color: #333;
     font-weight: bold;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+}*/
 
 /* Navbar e Sidebar */
-.navbar, .bg-primary {
-    background-color: #f4b942 !important; /* tom de amarelo pôr do sol */
-    color: #222;
+/*.navbar, .bg-primary {
+    background-color: #f4b942 !important;*/ /* tom de amarelo pôr do sol */
+    /*color: #222;
 }
 
 .nav-link,
@@ -22,14 +22,14 @@ body {
     .nav-item a.active,
     .dropdown-item.active {
         background-color: #ffe9b0 !important;
-    }
+    }*/
 
 /* Dropdown */
-.dropdown-menu {
+/*.dropdown-menu {
     background-color: #fff8e6;
     border: 1px solid #f0c36d;
 }
 
 .dropdown-item:hover {
     background-color: #fce4a3;
-}
+}*/

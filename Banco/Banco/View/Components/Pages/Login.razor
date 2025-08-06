@@ -1,52 +1,124 @@
-﻿@using Banco.Enums
-@using Banco.Services
+﻿@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using Banco.Models.Entities
+@using Banco.Services.Interfaces
+@inject IClienteService ClienteService
 @inject NavigationManager Nav
-@inject AutenticacaoService AuthService
-@rendermode InteractiveServer
-@inject SessaoUsuarioService Sessao
 
-<h3>Login</h3>
+<div class="cadastro-container p-4">
+    <div class="cadastro-box shadow">
+        <h4 class="text-center mb-4">Cadastro de Cliente</h4>
 
-<EditForm Model="loginModel" OnValidSubmit="FazerLogin">
-    <InputText @bind-Value="loginModel.CPF" placeholder="CPF" />
-    <InputText @bind-Value="loginModel.Senha" placeholder="Senha" type="password" />
-    <button type="submit">Entrar</button>
-</EditForm>
+        <EditForm Model="clienteForm" OnValidSubmit="Cadastrar" FormName="cadastroCliente" Enhanced="false">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
-@if (!string.IsNullOrEmpty(erro))
-{
-    <p style="color:red">@erro</p>
-}
+            <div class="mb-3">
+                <InputText @bind-Value="clienteForm.Nome" placeholder="Nome" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="clienteForm.CPF" placeholder="CPF" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="clienteForm.Senha" type="password" placeholder="Senha" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+        </EditForm>
+
+        @if (!string.IsNullOrEmpty(mensagem))
+        {
+            <div class="alert alert-info mt-3 text-center">@mensagem</div>
+        }
+
+        <div class="text-center mt-3">
+            <a href="/" class="btn btn-outline-secondary">← Voltar para Login</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .cadastro-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #fffef8;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .cadastro-box {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-control {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #5a5a5a;
+        border: none;
+        font-weight: bold;
+    }
+
+        .btn-primary:hover {
+            background-color: #444444;
+        }
+
+    .btn-outline-secondary {
+        font-weight: bold;
+        color: #5a5a5a;
+        border: 1px solid #ccc;
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: #e6e6e6;
+            color: #222;
+        }
+</style>
 
 @code {
-    private LoginModel loginModel = new();
-    private string erro;
+    private ClienteForm clienteForm = new();
+    private string mensagem;
 
-    private async Task FazerLogin()
+    private async Task Cadastrar()
     {
-        erro = string.Empty;
-
-        var (tipo, usuario) = AuthService.Autenticar(loginModel.CPF, loginModel.Senha);
-
-        switch (tipo)
+        try
         {
-            case TipoUsuarioEnum.Cliente:
-                Sessao.DefinirSessao(loginModel.CPF, tipo);
-                Nav.NavigateTo("/cliente");
-                break;
-            case TipoUsuarioEnum.Gerente:
-                Sessao.DefinirSessao(loginModel.CPF, tipo);
-                Nav.NavigateTo("/gerente/aprovacao");
-                break;
-            default:
-                erro = "CPF ou senha inválidos.";
-                break;
+            var cliente = new Cliente();
+            cliente.SetNome(clienteForm.Nome);
+            cliente.SetCpf(clienteForm.CPF);
+            cliente.SetSenha(clienteForm.Senha);
+
+            ClienteService.CriarCliente(cliente);
+            mensagem = "Cliente cadastrado com sucesso!";
+
+            await Task.Delay(1500);
+            Nav.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            mensagem = $"Erro: {ex.Message}";
         }
     }
 
-    class LoginModel
+    public class ClienteForm
     {
+        [Required(ErrorMessage = "Nome é obrigatório")]
+        public string Nome { get; set; }
+
+        [Required(ErrorMessage = "CPF é obrigatório")]
         public string CPF { get; set; }
+
+        [Required(ErrorMessage = "Senha é obrigatória")]
+        [MinLength(6, ErrorMessage = "Senha deve ter no mínimo 6 caracteres")]
         public string Senha { get; set; }
     }
 }

@@ -4,30 +4,81 @@
 @using Banco.Models.Entities
 @using Banco.Services.Interfaces
 @inject IClienteService ClienteService
+@inject NavigationManager Nav
 
-<h3>Cadastro de Cliente</h3>
+<div class="cadastro-container">
+    <div class="cadastro-box shadow">
+        <h4 class="text-center mb-4">Cadastro de Cliente</h4>
 
-<EditForm Model="clienteForm" OnValidSubmit="Cadastrar" FormName="cadastroCliente" Enhanced="false">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+        <EditForm Model="clienteForm" OnValidSubmit="Cadastrar" FormName="cadastroCliente" Enhanced="false">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
-    <InputText @bind-Value="clienteForm.Nome" placeholder="Nome" class="form-control mb-2" />
-    <InputText @bind-Value="clienteForm.CPF" placeholder="CPF" class="form-control mb-2" />
-    <InputText @bind-Value="clienteForm.Senha" type="password" placeholder="Senha" class="form-control mb-2" />
+            <InputText @bind-Value="clienteForm.Nome" placeholder="Nome" class="form-control mb-3" />
+            <InputText @bind-Value="clienteForm.CPF" placeholder="CPF" class="form-control mb-3" />
+            <InputText @bind-Value="clienteForm.Senha" type="password" placeholder="Senha" class="form-control mb-3" />
 
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
-</EditForm>
+            <button type="submit" class="btn btn-custom w-100">Cadastrar</button>
+        </EditForm>
 
-@if (!string.IsNullOrEmpty(mensagem))
-{
-    <div class="alert alert-info mt‑3">@mensagem</div>
-}
+        @if (!string.IsNullOrEmpty(mensagem))
+        {
+            <div class="alert alert-info mt-3 text-center">@mensagem</div>
+        }
+
+        <div class="text-center mt-3">
+            <a href="/" class="link-voltar">← Voltar para Login</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .cadastro-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #fffef8;
+    }
+
+    .cadastro-box {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 400px;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .btn-custom {
+        background-color: #5a5a5a;
+        color: #ffffff;
+        font-weight: bold;
+        border: none;
+    }
+
+        .btn-custom:hover {
+            background-color: #444;
+            color: #ffffff;
+        }
+
+    .link-voltar {
+        color: #5a5a5a;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .link-voltar:hover {
+            text-decoration: underline;
+            color: #000;
+        }
+</style>
 
 @code {
     private ClienteForm clienteForm = new();
     private string mensagem;
 
-    private void Cadastrar()
+    private async Task Cadastrar()
     {
         try
         {
@@ -38,7 +89,9 @@
 
             ClienteService.CriarCliente(cliente);
             mensagem = "Cliente cadastrado com sucesso!";
-            clienteForm = new();
+
+            await Task.Delay(1500);
+            Nav.NavigateTo("/");
         }
         catch (Exception ex)
         {

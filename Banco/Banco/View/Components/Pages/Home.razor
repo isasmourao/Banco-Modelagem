@@ -29,7 +29,10 @@
                 <label class="form-label">Senha:</label>
                 <input type="password" class="form-control" @bind="senha" />
             </div>
-            <button class="btn btn-primary" @onclick="Login">Entrar</button>
+            <div class="d-flex flex-column flex-md-row gap-2">
+                <button class="btn btn-primary" @onclick="Login">Entrar</button>
+                <a class="btn btn-outline-secondary" href="/cadastro-cliente">Cadastrar-se</a>
+            </div>
         }
         else
         {
@@ -75,3 +78,18 @@
         await JS.InvokeVoidAsync("alert", "CPF ou senha inválidos.");
     }
 }
+<style>
+    .btn-outline-secondary {
+        font-weight: bold;
+        border-radius: 8px;
+        color: #555 !important;
+        border-color: #ccc;
+        background-color: #f9f9f9;
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: #e6e6e6;
+            color: #222 !important;
+        }
+
+</style>
