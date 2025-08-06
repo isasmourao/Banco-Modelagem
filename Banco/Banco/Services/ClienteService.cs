@@ -31,9 +31,11 @@ namespace Banco.Services
 
         public void CriarCliente(Cliente novoCliente)
         {
+            novoCliente.SetCpf(novoCliente.CPF);
+
             novoCliente.Contas = new List<Conta>
             {
-                new Conta
+                new Conta(novoCliente.CPF)
                 {
                     Id = Guid.NewGuid(),
                     Numero = GerarNumeroConta(),

@@ -6,9 +6,9 @@ namespace Banco.Models.Entities
     public abstract class Usuario
     {
         public Guid Id { get; protected set; } = Guid.NewGuid();
-        public string Nome {  get; private set; }
-        public string CPF { get; private set; }
-        public string Senha { get; private set; }
+        public string Nome {  get; set; }
+        public string CPF { get; set; }
+        public string Senha { get; set; }
 
         protected Usuario()
         {

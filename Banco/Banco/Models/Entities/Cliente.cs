@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Banco.Models.Entities
+﻿namespace Banco.Models.Entities
 {
     public class Cliente : Usuario
     {
