@@ -1,11 +1,12 @@
 ﻿@page "/cliente/deposito"
+@rendermode InteractiveServer
 @using System.ComponentModel.DataAnnotations
 @using Banco.Services.Interfaces
 @inject IClienteService ClienteService
 
 <h3>Depósito em Conta</h3>
 
-<EditForm Model="@form" OnValidSubmit="Depositar">
+<EditForm Model="@form" OnValidSubmit="Depositar" FormName="form-deposito" Enhanced="false">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -33,9 +34,10 @@
                 throw new Exception("Cliente ou conta não encontrada.");
 
             var conta = cliente.Contas.First();
-            ClienteService.Depositar(cliente.CPF, conta.Id, form.Valor);
+            ClienteService.Depositar(cliente.CPF, conta.Id, form.Valor.Value);
 
             mensagem = $"Depósito de {form.Valor:C} realizado com sucesso.";
+            form = new(); // limpa o form
         }
         catch (Exception ex)
         {
@@ -45,11 +47,11 @@
 
     public class FormDeposito
     {
-        [Required]
+        [Required(ErrorMessage = "CPF é obrigatório")]
         public string CPF { get; set; }
 
-        [Required]
-        [Range(1, double.MaxValue)]
-        public decimal Valor { get; set; }
+        [Required(ErrorMessage = "Valor é obrigatório")]
+        [Range(1, 100000, ErrorMessage = "O valor deve ser maior que 0 e até R$100.000")]
+        public decimal? Valor { get; set; } // nullable para funcionar com validação
     }
 }

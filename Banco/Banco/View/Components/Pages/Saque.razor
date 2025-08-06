@@ -3,6 +3,7 @@
 @inject IClienteService ClienteService
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
+@rendermode InteractiveServer
 
 <PageTitle>Saque</PageTitle>
 
@@ -23,7 +24,7 @@
     <input type="number" class="form-control" @bind="valor" />
 </div>
 
-<button class="btn btn-danger" @onclick="RealizarSaque">Sacar</button>
+<button type="button" class="btn btn-danger" @onclick="RealizarSaque">Sacar</button>
 
 @code {
     private string cpf;
@@ -34,6 +35,7 @@
     {
         try
         {
+            Console.WriteLine("Entrou no método!");
             var contaId = Guid.Parse(contaIdStr);
             ClienteService.Sacar(cpf, contaId, valor);
             await JS.InvokeVoidAsync("alert", "Saque realizado com sucesso!");

@@ -1,58 +1,84 @@
 [
   {
-    "Contas": [],
+    "Contas": [
+      {
+        "Id": "a2ac6633-b67b-4867-8c9c-90369750de1c",
+        "Numero": "31872349",
+        "Saldo": 4,
+        "CPFCliente": "14009240000",
+        "Extratos": [
+          {
+            "ContaId": "00000000-0000-0000-0000-000000000000",
+            "Data": "2025-08-05T21:15:20.0764733-03:00",
+            "Descricao": "Transfer\u00EAncia de 56374244",
+            "Valor": 4
+          }
+        ]
+      }
+    ],
     "EmprestimosSolicitados": [],
-    "Id": "1ad4e6a0-d992-4ace-b78c-46d2d5c5b43d",
-    "Nome": null,
-    "CPF": null,
-    "Senha": null
-  },
-  {
-    "Contas": [],
-    "EmprestimosSolicitados": [],
-    "Id": "515ff71a-f74f-4a15-8434-c1d77d70bf7d",
-    "Nome": null,
-    "CPF": null,
-    "Senha": null
-  },
-  {
-    "Contas": [],
-    "EmprestimosSolicitados": [],
-    "Id": "b3510f4a-a1ff-4e10-85ec-c88981e33c4f",
-    "Nome": null,
-    "CPF": null,
-    "Senha": null
+    "Id": "06760d45-87b6-4c1c-8c53-ad8ed8eb24b3",
+    "Nome": "teste",
+    "CPF": "14009240000",
+    "Senha": "loadsikasd"
   },
   {
     "Contas": [
       {
-        "Id": "f76c5781-9dea-43ac-8686-7784ee3a4b75",
-        "Numero": "73886054",
-        "Saldo": 0,
-        "CPFCliente": null,
-        "Extratos": []
+        "Id": "58f00791-dd3e-47ef-850c-f31c93cbd095",
+        "Numero": "56374244",
+        "Saldo": 4,
+        "CPFCliente": "14000046695",
+        "Extratos": [
+          {
+            "ContaId": "00000000-0000-0000-0000-000000000000",
+            "Data": "2025-08-05T21:04:17.5675432-03:00",
+            "Descricao": "Dep\u00F3sito",
+            "Valor": 10
+          },
+          {
+            "ContaId": "00000000-0000-0000-0000-000000000000",
+            "Data": "2025-08-05T21:13:16.0666394-03:00",
+            "Descricao": "Saque",
+            "Valor": -2
+          },
+          {
+            "ContaId": "00000000-0000-0000-0000-000000000000",
+            "Data": "2025-08-05T21:15:20.0763246-03:00",
+            "Descricao": "Transfer\u00EAncia para 31872349",
+            "Valor": -4
+          }
+        ]
       }
     ],
     "EmprestimosSolicitados": [],
-    "Id": "24e35af6-a91c-471a-bda8-c485d35f5144",
-    "Nome": "isabellateste3",
-    "CPF": "14085678800",
-    "Senha": "oiploisodos"
+    "Id": "bc1320ae-52bb-439a-80b8-e9999c579473",
+    "Nome": "teste_2",
+    "CPF": "14000046695",
+    "Senha": "pldsaodkla"
   },
   {
     "Contas": [
       {
-        "Id": "eda9c574-c38b-4253-9b2a-7fccbbcc9e95",
-        "Numero": "40936669",
+        "Id": "d656608b-77cb-4c2b-b693-61d64346d3e3",
+        "Numero": "69618444",
         "Saldo": 0,
-        "CPFCliente": null,
+        "CPFCliente": "45678909909",
         "Extratos": []
       }
     ],
-    "EmprestimosSolicitados": [],
-    "Id": "73c7c4be-6128-491e-8dfc-ca0226d18433",
-    "Nome": "teste4",
+    "EmprestimosSolicitados": [
+      {
+        "Id": "dd01044e-0e85-4823-9723-4bbc69420942",
+        "CPFCliente": "45678909909",
+        "Valor": 20,
+        "Aprovado": false,
+        "DataSolicitacao": "2025-08-05T21:18:06.9236064-03:00"
+      }
+    ],
+    "Id": "f2ed4469-b84c-4b44-a758-4813982e5645",
+    "Nome": "teste_3",
     "CPF": "45678909909",
-    "Senha": "aoiwhdjoaiwjd"
+    "Senha": "xcvbnmsd"
   }
 ]

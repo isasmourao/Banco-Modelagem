@@ -46,8 +46,15 @@ public class ClienteRepository : IClienteRepository
 
     public Cliente ObterPorCpf(string cpf)
     {
-        return clientes.FirstOrDefault(c => c.CPF == cpf);
+        if (string.IsNullOrWhiteSpace(cpf)) return null;
+
+        string cpfNormalizado = cpf.Replace(".", "").Replace("-", "").Trim();
+
+        return clientes.FirstOrDefault(c =>
+            !string.IsNullOrWhiteSpace(c.CPF) &&
+            c.CPF.Replace(".", "").Replace("-", "").Trim() == cpfNormalizado);
     }
+
 
     public void Atualizar(Cliente clienteAtualizado)
     {

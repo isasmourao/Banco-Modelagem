@@ -6,7 +6,7 @@ namespace Banco.Infrastructure.Repositories
 {
     public class ExtratoRepository : IExtratoRepository
     {
-        private readonly string _caminhoArquivo = "Data/extratos.json";
+        private static readonly string _caminhoArquivo = "extratos.json";
 
         public void Adicionar(Extrato extrato)
         {

@@ -6,7 +6,7 @@ namespace Banco.Infrastructure.Repositories
 {
     public class EmprestimoRepository : IEmprestimoRepository
     {
-        private readonly string _caminhoArquivo = "Data/emprestimos.json";
+        private readonly string _caminhoArquivo = "emprestimos.json";
 
         public void Adicionar(Emprestimo emprestimo)
         {

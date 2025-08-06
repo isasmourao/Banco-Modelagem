@@ -3,11 +3,21 @@
     public class Conta
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+
         public string Numero { get; set; }
+
         public decimal Saldo { get; set; } = 0;
+
         public string CPFCliente { get; set; }
+
         public List<Extrato> Extratos { get; set; } = new();
+
         public Conta() { }
+
+        public Conta(string cpfCliente)
+        {
+            CPFCliente = cpfCliente;
+        }
 
         public void AdicionarExtrato(string descricao, decimal valor)
         {
@@ -18,11 +28,12 @@
                 Valor = valor
             });
         }
-        
+
         public void Depositar(decimal valor)
         {
             if (valor <= 0)
                 throw new Exception("Valor inválido para depósito.");
+
             Saldo += valor;
         }
 
@@ -30,6 +41,7 @@
         {
             if (valor <= 0 || valor > Saldo)
                 throw new Exception("Saldo insuficiente ou valor inválido.");
+
             Saldo -= valor;
         }
 
