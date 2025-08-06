@@ -6,6 +6,6 @@ namespace Banco.Infrastructure.Interfaces
     {
         void Adicionar(Extrato extrato);
         List<Extrato> ListarTodos();
-        List<Extrato> ListarPorConta(Guid contaId);
+        List<Extrato> ListarPorContaId(Guid contaId);
     }
 }
