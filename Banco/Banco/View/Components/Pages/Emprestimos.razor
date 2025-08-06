@@ -1,0 +1,72 @@
+﻿@page "/emprestimos"
+@using Banco.Services
+@using Banco.Services.Interfaces
+@inject NavigationManager Navigation
+@inject IClienteService ClienteService
+@inject IGerenteService GerenteService
+@inject IJSRuntime JS
+@inject SessaoUsuarioService Sessao
+@rendermode InteractiveServer
+
+<h3>Acesso aos Empréstimos</h3>
+
+<div class="mb-3">
+    <label class="form-label">CPF:</label>
+    <input class="form-control" @bind="cpf" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Senha:</label>
+    <input type="password" class="form-control" @bind="senha" />
+</div>
+
+<button class="btn btn-primary" @onclick="ValidarAcesso">Entrar</button>
+
+@code {
+    private string cpf;
+    private string senha;
+
+    private async Task ValidarAcesso()
+    {
+        try
+        {
+            if (GerenteService.GerenteExiste(cpf))
+            {
+                var gerente = GerenteService.ObterPorCpf(cpf);
+                if (gerente?.Senha == senha)
+                {
+                    Sessao.Login(cpf, Banco.Enums.TipoUsuarioEnum.Gerente);
+                    Navigation.NavigateTo("/gerente/aprovacao");
+                    return;
+                }
+                else
+                {
+                    await JS.InvokeVoidAsync("alert", "Senha incorreta para gerente.");
+                    return;
+                }
+            }
+
+            if (ClienteService.ClienteExiste(cpf))
+            {
+                var cliente = ClienteService.ObterPorCpf(cpf);
+                if (cliente?.Senha == senha)
+                {
+                    Sessao.Login(cpf, Banco.Enums.TipoUsuarioEnum.Cliente);
+                    Navigation.NavigateTo("/cliente/meus-emprestimos");
+                    return;
+                }
+                else
+                {
+                    await JS.InvokeVoidAsync("alert", "Senha incorreta para cliente.");
+                    return;
+                }
+            }
+
+            await JS.InvokeVoidAsync("alert", "CPF não encontrado.");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Erro ao validar acesso: {ex.Message}");
+        }
+    }
+}

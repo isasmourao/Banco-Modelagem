@@ -1,0 +1,86 @@
+﻿@page "/gerente/aprovacao"
+@using Banco.Enums
+@using Banco.Services
+@using Banco.Services.Interfaces
+@inject IGerenteService GerenteService
+@inject IJSRuntime JS
+@inject SessaoUsuarioService Sessao
+@rendermode InteractiveServer
+
+<h3>Aprovação de Empréstimos</h3>
+
+@if (emprestimosPendentes.Count == 0)
+{
+    <p>Nenhum empréstimo pendente no momento.</p>
+}
+else
+{
+    <h5>Empréstimos Pendentes:</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Cliente CPF</th>
+                <th>Valor</th>
+                <th>Data</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in emprestimosPendentes)
+            {
+                <tr>
+                    <td>@e.CPFCliente</td>
+                    <td>@e.Valor.ToString("C")</td>
+                    <td>@e.DataSolicitacao.ToShortDateString()</td>
+                    <td>
+                        <button class="btn btn-success me-1" @onclick="@(() => Aprovar(e.Id))">Aprovar</button>
+                        <button class="btn btn-danger" @onclick="@(() => Recusar(e.Id))">Recusar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Emprestimo> emprestimosPendentes = new();
+
+    protected override void OnInitialized()
+    {
+        if (Sessao.Tipo != TipoUsuarioEnum.Gerente || string.IsNullOrWhiteSpace(Sessao.CPF))
+        {
+            JS.InvokeVoidAsync("alert", "Acesso negado. Faça login como gerente.");
+            return;
+        }
+
+        emprestimosPendentes = GerenteService.ListarEmprestimosPendentes();
+    }
+
+    private async Task Aprovar(Guid id)
+    {
+        try
+        {
+            GerenteService.AprovarEmprestimo(Sessao.CPF, id);
+            await JS.InvokeVoidAsync("alert", "Empréstimo aprovado.");
+            emprestimosPendentes = GerenteService.ListarEmprestimosPendentes();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Erro: {ex.Message}");
+        }
+    }
+
+    private async Task Recusar(Guid id)
+    {
+        try
+        {
+            GerenteService.RecusarEmprestimo(Sessao.CPF, id);
+            await JS.InvokeVoidAsync("alert", "Empréstimo recusado.");
+            emprestimosPendentes = GerenteService.ListarEmprestimosPendentes();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"Erro: {ex.Message}");
+        }
+    }
+}

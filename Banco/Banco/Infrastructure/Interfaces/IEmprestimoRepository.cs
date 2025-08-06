@@ -8,5 +8,7 @@ namespace Banco.Infrastructure.Interfaces
         void Adicionar(Emprestimo emprestimo);
         List<Emprestimo> ListarTodos();
         List<Emprestimo> ListarPorCPF(string cpf);
+        Emprestimo ObterPorId(Guid id);
+        void Atualizar(Emprestimo emprestimo);
     }
 }
