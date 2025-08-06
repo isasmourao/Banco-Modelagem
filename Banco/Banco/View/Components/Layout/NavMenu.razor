@@ -59,7 +59,7 @@
 
         <!-- Botão de Logout -->
         <div class="nav-item mt-4">
-            <button class="btn btn-warning w-100" @onclick="Logout">Sair</button>
+            <button class="logout-button" @onclick="Logout">Sair</button>
         </div>
     }
 </nav>
@@ -77,32 +77,43 @@
 
 <style>
     .nav-menu {
-        background-color: #343a40; /* cinza escuro */
+        background-color: #2f2f2f; /* Cinza cimento escuro */
         min-height: 100vh;
+        padding: 1.5rem;
+        font-family: 'Segoe UI', sans-serif;
+        color: #ffffff;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     }
 
     /* Links principais do menu */
     .nav-link,
     .nav-link:visited,
     .nav-link:not(.active) {
-        color: #ffffff !important;
+        color: #f1f1f1 !important;
         font-weight: bold;
+        border-radius: 4px;
+        padding: 0.5rem;
+        display: block;
     }
 
-        /* Quando ativo (selecionado) */
-        .nav-link.active {
-            color: #ffc107 !important; /* amarelo destaque */
-        }
+    /* Força cor do link ativo com seletor mais específico */
+    .nav-menu .nav-link.active {
+        background-color: #5a5a5a !important; /* fundo cinza mais claro */
+        color: #e0e0e0 !important; /* texto cinza claro */
+        font-weight: bold;
+        border-radius: 4px;
+    }
 
-        /* Quando passa o mouse */
-        .nav-link:hover {
-            color: #000000 !important; /* texto preto no hover */
-        }
+    .nav-link:hover {
+        background-color: #555;
+        color: #ffffff !important;
+    }
 
     /* Dropdown */
     .dropdown-menu {
-        background-color: #495057;
+        background-color: #3a3a3a;
         border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     /* Itens do dropdown */
@@ -113,25 +124,44 @@
         font-weight: bold;
     }
 
-        /* Hover no dropdown */
-        .dropdown-item:hover {
-            background-color: #6c757d;
-            color: #000000 !important;
-        }
+    /* Cor do item ativo do dropdown */
+    .dropdown-menu .dropdown-item.active {
+        background-color: #5a5a5a !important;
+        color: #e0e0e0 !important;
+    }
+
+    .dropdown-item:hover {
+        background-color: #555;
+        color: #ffffff !important;
+    }
 
     /* Ícones */
     .bi {
         font-size: 1.2rem;
+        margin-right: 0.3rem;
     }
 
-    /* Abrir menu ao passar mouse */
+    /* Mostrar dropdown ao passar o mouse */
     .dropdown:hover .dropdown-menu {
         display: block;
     }
 
-    .dropdown-toggle::after {
-        margin-left: 0.5rem;
+    /* Botão de logout customizado */
+    .logout-button {
+        background-color: #444;
+        color: #fff;
+        border: none;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        width: 100%;
+        border-radius: 4px;
+        transition: background-color 0.2s ease-in-out;
     }
 
+        .logout-button:hover {
+            background-color: #555;
+            color: #fff;
+        }
 </style>
+
 

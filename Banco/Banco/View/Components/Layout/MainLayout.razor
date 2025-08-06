@@ -21,6 +21,7 @@
     </div>
 </div>
 
+<!-- Erro Blazor -->
 <div id="blazor-error-ui" class="alert alert-danger fixed-bottom m-0 rounded-0 text-center" style="display:none;">
     Ocorreu um erro inesperado.
     <a href="" class="alert-link">Recarregar</a>
@@ -28,27 +29,38 @@
 </div>
 
 <style>
+    /* Conteúdo principal */
     .main-content {
-        background-color: #778899;
+        background-color: #fdfdfd; /* offwhite */
         min-height: 100vh;
-        color: black;
-        font-weight: bold;
-    }
-
-    .custom-header {
-        background-color: #c9b6e4;
-        color: white;
+        color: #333333; /* cinza escuro confortável */
         font-weight: bold;
         font-family: 'Segoe UI', sans-serif;
     }
 
+    /* Cabeçalho */
+    .custom-header {
+        padding-top: 1.2rem;
+        padding-bottom: 1.2rem;
+        background-color: #e6e6fa; /* Lavanda clara */
+        color: #333;
+        font-weight: bold;
+        font-family: 'Segoe UI', sans-serif;
+        border-bottom: 1px solid #ddd; /* borda inferior clara */
+        border-radius: 0 0 12px 12px; /* cantos inferiores arredondados */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); /* sombra leve */
+    }
+
+
         .custom-header a {
-            color: white;
+            color: #333;
             font-weight: bold;
             text-decoration: none;
+            transition: all 0.2s ease-in-out;
         }
 
             .custom-header a:hover {
                 text-decoration: underline;
+                color: #555;
             }
 </style>
