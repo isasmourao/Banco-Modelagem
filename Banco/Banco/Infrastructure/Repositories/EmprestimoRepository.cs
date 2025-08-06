@@ -29,6 +29,23 @@ namespace Banco.Infrastructure.Repositories
             return ListarTodos().Where(e => e.CPFCliente == cpf).ToList();
         }
 
+        public Emprestimo ObterPorId(Guid id)
+        {
+            return ListarTodos().FirstOrDefault(e => e.Id == id);
+        }
+
+        public void Atualizar(Emprestimo emprestimoAtualizado)
+        {
+            var emprestimos = ListarTodos();
+            var index = emprestimos.FindIndex(e => e.Id == emprestimoAtualizado.Id);
+
+            if (index == -1)
+                throw new Exception("Empréstimo não encontrado para atualização.");
+
+            emprestimos[index] = emprestimoAtualizado;
+            Salvar(emprestimos);
+        }
+
         private void Salvar(List<Emprestimo> emprestimos)
         {
             var json = JsonSerializer.Serialize(emprestimos, new JsonSerializerOptions { WriteIndented = true });

@@ -15,6 +15,10 @@ builder.Services.AddSingleton<IContaRepository, ContaRepository>();
 builder.Services.AddSingleton<IContaService, ContaService>();
 builder.Services.AddScoped<IEmprestimoRepository, EmprestimoRepository>();
 builder.Services.AddScoped<IExtratoRepository, ExtratoRepository>();
+builder.Services.AddScoped<IGerenteService, GerenteService>();
+builder.Services.AddScoped<IGerenteRepository, GerenteRepository>();
+builder.Services.AddScoped<AutenticacaoService>();
+builder.Services.AddSingleton<SessaoUsuarioService>();
 
 var app = builder.Build();
 

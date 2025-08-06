@@ -1,0 +1,50 @@
+﻿@using Banco.Enums
+@using Banco.Services
+@inject NavigationManager Nav
+@inject AutenticacaoService AuthService
+@rendermode InteractiveServer
+@inject SessaoUsuarioService Sessao
+
+<h3>Login</h3>
+
+<EditForm Model="loginModel" OnValidSubmit="FazerLogin">
+    <InputText @bind-Value="loginModel.CPF" placeholder="CPF" />
+    <InputText @bind-Value="loginModel.Senha" placeholder="Senha" type="password" />
+    <button type="submit">Entrar</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(erro))
+{
+    <p style="color:red">@erro</p>
+}
+
+@code {
+    private LoginModel loginModel = new();
+    private string erro;
+
+    private async Task FazerLogin()
+    {
+        var (tipo, usuario) = AuthService.Autenticar(loginModel.CPF, loginModel.Senha);
+
+        switch (tipo)
+        {
+            case TipoUsuarioEnum.Cliente:
+                Sessao.DefinirSessao(loginModel.CPF, tipo);
+                Nav.NavigateTo("/cliente");
+                break;
+            case TipoUsuarioEnum.Gerente:
+                Sessao.DefinirSessao(loginModel.CPF, tipo);
+                Nav.NavigateTo("/gerente/aprovacao");
+                break;
+            default:
+                erro = "CPF ou senha inválidos.";
+                break;
+        }
+    }
+
+    class LoginModel
+    {
+        public string CPF { get; set; }
+        public string Senha { get; set; }
+    }
+}

@@ -1,0 +1,57 @@
+﻿@page "/cliente/meus-emprestimos"
+@using Banco.Infrastructure.Interfaces
+@using Banco.Services
+@inject IEmprestimoRepository EmprestimoRepo
+@rendermode InteractiveServer
+@inject SessaoUsuarioService Sessao
+
+<h3>Meus Empréstimos</h3>
+
+@if (emprestimos?.Any() != true)
+{
+    <p>Nenhum empréstimo encontrado.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Valor</th>
+                <th>Data</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in emprestimos)
+            {
+                <tr>
+                    <td>@e.Valor.ToString("C")</td>
+                    <td>@e.DataSolicitacao.ToShortDateString()</td>
+                    <td>
+                        @if (e.Aprovado == true)
+                        {
+                            <span class="text-success">Aprovado</span>
+                        }
+                        else if (e.Aprovado == false)
+                        {
+                            <span class="text-danger">Recusado</span>
+                        }
+                        else
+                        {
+                            <span class="text-warning">Pendente</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Emprestimo> emprestimos;
+
+    protected override void OnInitialized()
+    {
+        emprestimos = EmprestimoRepo.ListarPorCPF(Sessao.CPF);
+    }
+}
